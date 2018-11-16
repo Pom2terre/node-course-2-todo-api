@@ -21,6 +21,7 @@ client.connect(function(err) {
   var db = client.db(dbName);
   var collection = db.collection('Todos');
 
+// find only 1 record based on ObjectID
   collection.find({
     _id: new ObjectID('5be9d4b813d4154e75bfb69c')
   }).toArray().then((docs) => {

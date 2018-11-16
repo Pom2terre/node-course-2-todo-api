@@ -24,21 +24,30 @@ client.connect(function(err) {
   var db = client.db(dbName);
   var collection = db.collection('Todos');
 
-  // deleteMany()
-    // collection.deleteMany({text: 'Go for shopping'}).then((res) => {
-    //   console.log(res);
-    // });
+  // // findOneAndUpdate(filter, update, option, cb)
+  // collection.findOneAndUpdate({
+  //   _id: new ObjectID('5bee93cd0257df83f13a964a')
+  // }, {
+  //   $set: {
+  //     completed: true
+  //   }
+  // }, {
+  //   returnOriginal: false
+  // }).then((res) => {
+  //   console.log(res);
+  // });
+  collection = db.collection('Users');
+  collection.findOneAndUpdate({
+    _id: new ObjectID('5beb10be4b9c14776fe660b3')
+  }, {
+    $set: {name: 'Colette'},
+    $inc: {age: 30}
+  }, {
+    returnOriginal: false
+  })
+  .then((res) => {
+    console.log(res);
+  });
 
-  // deleteOne()
-    // collection.deleteOne({text: 'eat lunch'}).then((res) => {
-    //   console.log(res);
-    // });
-
-  // findOneAndDelete()
-    collection.findOneAndDelete({completed: true}).then((res) => {
-      console.log(res);
-    });
-
-
-    //  client.close();
+  //  client.close();
 });
