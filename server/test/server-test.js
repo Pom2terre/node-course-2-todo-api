@@ -4,8 +4,8 @@ const expect = require('expect');
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 
-beforeEach((done) => {  // will run before every single test case
-  Todo.deleteMany({}).then (() => { // delete all the TodaApp content!
+beforeEach((done) => { // will run before every single test case
+  Todo.deleteMany({}).then(() => { // delete all the TodaApp content!
     done();
   })
 });
@@ -26,12 +26,12 @@ describe('POST /todos', function() {
           return done(err); // generate an error message and exit the test
         }
         Todo.find() // if OK, we check the response in mongodb
-        .then((todos) => { //load all the todos
-          expect(todos.length).toBe(1); //only one record found see the beforeEach section
-          expect(todos[0].text).toBe(text); // db text === text variable
-          done();
-        })
-        .catch((err) => done(err));
+          .then((todos) => { //load all the todos
+            expect(todos.length).toBe(1); //only one record found see the beforeEach section
+            expect(todos[0].text).toBe(text); // db text === text variable
+            done();
+          })
+          .catch((err) => done(err));
       });
   });
 
@@ -40,14 +40,14 @@ describe('POST /todos', function() {
     supertest(app)
       .post('/todos')
       .send({}) // send nothing
-      .expect(400)  // bad request
+      .expect(400) // bad request
       .end((err, res) => {
         if (err) {
           return done(res);
         }
       });
 
-      Todo.find()
+    Todo.find()
       .then((todos) => {
         expect(todos.length).toBe(0);
         done();
