@@ -1,4 +1,4 @@
-const supertest = require('supertest');
+const request = require('supertest');
 const expect = require('expect');
 
 const {app} = require('./../server');
@@ -14,13 +14,13 @@ describe('POST /todos', function() {
   it('should create a new todo', (done) => {
     var text = 'Test todo text document';
 
-    supertest(app)
+    request(app)
       .post('/todos')
       .send({text})
-      .expect(200)
-      .expect((res) => {
-        expect(res.body.text).toBe(text);
-      })
+      .expect(200, body.text.toBe(text))
+      // .expect((res) => {
+      //   expect(res.body.text).toBe(text);
+      // })
       .end((err, res) => {
         if (err) {
           return done(err); // generate an error message and exit the test
@@ -37,7 +37,7 @@ describe('POST /todos', function() {
 
   it('should NOT create a todo with invalid body data', (done) => {
     // we do not pass any text at all => invalid data!
-    supertest(app)
+    request(app)
       .post('/todos')
       .send({}) // send nothing
       .expect(400) // bad request
