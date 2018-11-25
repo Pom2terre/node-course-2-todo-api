@@ -4,10 +4,16 @@ const expect = require('expect');
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 
+const todos = [{
+    text: 'First todo test' // dummy seed element for the
+  }, {
+    text: 'Second test todo'
+  }]; // get/todos test.
+
 beforeEach((done) => { // will run before every single test case
   Todo.deleteMany({}).then(() => { // delete all the TodaApp content!
-    done();
-  })
+    return Todo.insertMany(todos);
+  }).then(() => done());
 });
 
 describe('POST /todos', function() {
@@ -17,15 +23,15 @@ describe('POST /todos', function() {
     request(app)
       .post('/todos')
       .send({text})
-      .expect(200, body.text.toBe(text))
-      // .expect((res) => {
-      //   expect(res.body.text).toBe(text);
-      // })
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.text).toBe(text);
+      })
       .end((err, res) => {
         if (err) {
           return done(err); // generate an error message and exit the test
         }
-        Todo.find() // if OK, we check the response in mongodb
+        Todo.find({text}) // if OK, we check the response in mongodb
           .then((todos) => { //load all the todos
             expect(todos.length).toBe(1); //only one record found see the beforeEach section
             expect(todos[0].text).toBe(text); // db text === text variable
@@ -49,9 +55,22 @@ describe('POST /todos', function() {
 
     Todo.find()
       .then((todos) => {
-        expect(todos.length).toBe(0);
+        expect(todos.length).toBe(2);
         done();
       })
       .catch((err) => done(err));
+  });
+});
+
+describe('GET /todos',() => {
+  it('should get all records from the todos collection', (done) => {
+
+    request(app)
+    .get('/todos')
+    .expect(200)
+    .expect((res) => {
+      expect(res.body.todos.length).toBe(2);
+    })
+    .end(done);
   });
 });
