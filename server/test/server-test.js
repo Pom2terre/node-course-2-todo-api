@@ -66,7 +66,7 @@ describe('GET /todos',() => {
   it('should get all records from the todos collection', (done) => {
 
     request(app)
-    .get('/todos')
+    .get('/ttodos')
     .expect(200)
     .expect((res) => {
       expect(res.body.todos.length).toBe(2);
