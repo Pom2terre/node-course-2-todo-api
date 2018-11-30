@@ -10,6 +10,7 @@ const app = express();
 
 app.use(bodyParser.json()); // use body-parser as middleware
 
+// Create a new document in collection todos
 app.post('/todos', (req, res) => {
   let todo = new Todo({
     text: req.body.text
@@ -22,6 +23,7 @@ app.post('/todos', (req, res) => {
   });
 });
 
+// get all todos
 app.get('/todos', (req, res) => {
   Todo.find().then((todos) => {
     res.send({todos});
@@ -30,9 +32,9 @@ app.get('/todos', (req, res) => {
   });
 });
 
-// GET /todos/1234324
+// GET /todos/1234324 by id
 app.get('/todos/:id', (req, res) => {
-  var id = req.params.id;
+  var id = req.params.id; // -> id comes from POSTMAN request
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
